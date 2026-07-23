@@ -1,0 +1,55 @@
+schema: spec-driven
+
+context: |
+  Project: VideosWorld — a Persian/Farsi movie & TV-series streaming site,
+  visually modeled on فیلم‌۲مدیا (Film2Media / nava-land.top).
+
+  Tech stack:
+    - Next.js 16 (App Router, app/ directory)
+    - React 19
+    - TypeScript (strict)
+    - Tailwind CSS v4 (via @tailwindcss/postcss)
+    - npm as the package manager
+    - No ESLint configured yet; no src/ dir; import alias "@/*"
+
+  Localization & layout:
+    - UI language is Persian (Farsi). Root layout is RTL (dir="rtl", lang="fa").
+    - Use a Persian-friendly font; numerals may render as Persian digits.
+
+  Design system:
+    - Dark theme. Near-black backgrounds (#0d0d0d / #111).
+    - Accent color: lime/chartreuse green (~#a3e635 / #9de600) for primary
+      buttons, active tabs, highlights, and the logo mark.
+    - Poster cards: portrait 2:3 posters with rounded corners; overlay badges
+      for CC/subtitle, Persian-dubbing (mic icon), and IMDb rating; title and
+      season/episode caption beneath.
+    - Pill-shaped tabs and buttons; rounded input fields on dark surfaces.
+
+  Key pages:
+    - Home: hero carousel (featured title) + multiple horizontal scroll rows
+      grouped by category (latest movies, latest series, top rated, world
+      series, Korean, Turkish, anime, Chinese, Persian-dubbed, kids).
+    - Category/listing: search bar + filters (genre, sort, country, year-range
+      slider 1800–2026, toggles for Persian dub / attached subtitles /
+      recommended), responsive poster grid, numbered pagination.
+    - Single title: poster + metadata (IMDb, year, country, genre, cast),
+      download boxes with quality options (1080p / 720p / 480p) and online play,
+      plus recommended movies/series rows.
+    - Auth: login (username, password, captcha) and register (username, phone,
+      email, password, repeat password, captcha) as a tabbed card.
+
+  Conventions:
+    - Server Components by default; add "use client" only for interactive UI
+      (carousels, filter toggles, tabs).
+    - Colocate presentational components under components/; keep them small and
+      single-purpose. Use mock data modules until a backend exists.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
