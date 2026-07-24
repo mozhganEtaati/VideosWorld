@@ -1,13 +1,21 @@
 import { NextResponse } from "next/server";
 import { tmdbFetch, TmdbConfigError, TmdbRequestError } from "@/services/tmdb/client";
-import { mergeListTitles } from "@/services/tmdb/localize";
-import type { TmdbListItem, TmdbPaginated } from "@/types/tmdb";
+import { mergeListTitles, mergeCreditTitles } from "@/services/tmdb/localize";
+import type { TmdbCredits, TmdbListItem, TmdbPaginated } from "@/types/tmdb";
 
 function isList(data: unknown): data is TmdbPaginated<TmdbListItem> {
   return (
     typeof data === "object" &&
     data !== null &&
     Array.isArray((data as { results?: unknown }).results)
+  );
+}
+
+function isCredits(data: unknown): data is TmdbCredits {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    Array.isArray((data as { cast?: unknown }).cast)
   );
 }
 
@@ -19,6 +27,7 @@ function isList(data: unknown): data is TmdbPaginated<TmdbListItem> {
 const ALLOWED_PREFIXES = [
   "movie/",
   "tv/",
+  "person/",
   "discover/",
   "search/",
   "genre/",
@@ -52,6 +61,13 @@ export async function GET(
         language: "en-US",
       });
       return NextResponse.json(mergeListTitles(data, en));
+    }
+    if (isCredits(data)) {
+      const en = await tmdbFetch<TmdbCredits>(tmdbPath, {
+        ...forwarded,
+        language: "en-US",
+      });
+      return NextResponse.json(mergeCreditTitles(data, en));
     }
     return NextResponse.json(data);
   } catch (err) {
