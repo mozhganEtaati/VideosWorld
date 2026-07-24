@@ -1,4 +1,4 @@
-import type { TmdbListItem, TmdbPaginated } from "@/types/tmdb";
+import type { TmdbCredits, TmdbListItem, TmdbPaginated } from "@/types/tmdb";
 
 // Persian/Arabic script range — used to detect a real Persian translation.
 const PERSIAN_RE = /[؀-ۿ]/;
@@ -33,6 +33,28 @@ export function mergeListTitles<T extends TmdbListItem>(
   return {
     ...fa,
     results: fa.results.map((item) => {
+      const e = enById.get(item.id);
+      const next = { ...item };
+      if (item.title !== undefined) {
+        next.title = pickTitle(item.title, e?.title, item.original_title);
+      }
+      if (item.name !== undefined) {
+        next.name = pickTitle(item.name, e?.name, item.original_name);
+      }
+      return next;
+    }),
+  };
+}
+
+/**
+ * Merge English titles into a Persian credits result (a person's filmography):
+ * keep the Persian title when present, else the English one, matched by id.
+ */
+export function mergeCreditTitles(fa: TmdbCredits, en: TmdbCredits): TmdbCredits {
+  const enById = new Map(en.cast.map((r) => [r.id, r]));
+  return {
+    ...fa,
+    cast: fa.cast.map((item) => {
       const e = enById.get(item.id);
       const next = { ...item };
       if (item.title !== undefined) {

@@ -26,6 +26,7 @@ export interface TmdbListItem {
   poster_path: string | null;
   backdrop_path: string | null;
   vote_average: number;
+  popularity?: number;
   release_date?: string; // movies
   first_air_date?: string; // tv
   genre_ids?: number[];
@@ -37,6 +38,13 @@ export interface TmdbPaginated<T> {
   results: T[];
   total_pages: number;
   total_results: number;
+}
+
+/** person/{id}/{movie|tv}_credits payload (cast = the person's filmography). */
+export interface TmdbCredits {
+  id: number;
+  cast: TmdbListItem[];
+  crew?: TmdbListItem[];
 }
 
 export interface TmdbGenre {

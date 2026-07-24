@@ -1,8 +1,14 @@
 import Image from "next/image";
-import { Clock, CalendarDays, Globe, Play } from "lucide-react";
+import { Clock, CalendarDays, Globe } from "lucide-react";
 import { CarouselRow } from "@/components/media/carousel-row";
 import { ReactionButtons } from "./reaction-buttons";
 import { TrailerSection } from "./trailer-section";
+import {
+  TrailerRevealProvider,
+  TrailerToggleButton,
+  TrailerPanel,
+  TrailerCloseButton,
+} from "./trailer-reveal";
 import { CastRow } from "./cast-row";
 import { CommentsSection } from "./comments-section";
 import { FavoriteButton } from "@/components/favorites/favorite-button";
@@ -64,7 +70,7 @@ export function DetailView({ detail, mediaType }: DetailViewProps) {
   const similar = detail.similar?.results ?? [];
 
   return (
-    <div>
+    <TrailerRevealProvider>
       {/* cinematic hero */}
       <section className="relative">
         <div className="absolute inset-x-0 top-0 h-[460px] md:h-[560px]">
@@ -136,13 +142,7 @@ export function DetailView({ detail, mediaType }: DetailViewProps) {
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a
-                  href="#trailer"
-                  className="flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-bold text-accent-foreground transition hover:brightness-95"
-                >
-                  <Play className="h-4 w-4 fill-current" />
-                  پخش تریلر
-                </a>
+                <TrailerToggleButton className="flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-bold text-accent-foreground transition hover:brightness-95" />
                 <FavoriteButton item={favItem} variant="labeled" />
                 <ReactionButtons likes={reactions.likes} dislikes={reactions.dislikes} />
               </div>
@@ -152,11 +152,15 @@ export function DetailView({ detail, mediaType }: DetailViewProps) {
       </section>
 
       <div className="mx-auto max-w-[1400px] space-y-10 px-4 pb-10">
-        <div id="trailer" className="scroll-mt-24">
-          <TrailerSection backdrop={backdrop} title={title} />
-        </div>
+        <TrailerPanel>
+          <TrailerSection
+            backdrop={backdrop}
+            title={title}
+            action={<TrailerCloseButton />}
+          />
+        </TrailerPanel>
 
-        <CastRow cast={cast} />
+        <CastRow cast={cast} mediaType={mediaType} />
 
         {recommendations.length > 0 && (
           <CarouselRow title="پیشنهادها" items={recommendations} />
@@ -167,6 +171,6 @@ export function DetailView({ detail, mediaType }: DetailViewProps) {
 
         <CommentsSection comments={comments} />
       </div>
-    </div>
+    </TrailerRevealProvider>
   );
 }
