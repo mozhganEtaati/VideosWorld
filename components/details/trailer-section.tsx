@@ -6,13 +6,15 @@ import { toPersianDigits } from "@/lib/jalali";
 interface TrailerSectionProps {
   backdrop: string | null;
   title: string;
+  /** Optional control (e.g. a close button) pinned to the player's top corner. */
+  action?: React.ReactNode;
 }
 
 /**
  * Trailer area rendered as a styled *screenshot* of a video player — a still
  * frame with player chrome. It intentionally does NOT play a real trailer.
  */
-export function TrailerSection({ backdrop, title }: TrailerSectionProps) {
+export function TrailerSection({ backdrop, title, action }: TrailerSectionProps) {
   return (
     <section>
       <SectionHeading icon={Film}>تریلر</SectionHeading>
@@ -21,6 +23,9 @@ export function TrailerSection({ backdrop, title }: TrailerSectionProps) {
         className="group relative aspect-video w-full overflow-hidden rounded-2xl ring-1 ring-border"
         style={{ boxShadow: "0 0 60px -20px rgba(156,232,0,0.35)" }}
       >
+        {action ? (
+          <div className="absolute left-3 top-3 z-20">{action}</div>
+        ) : null}
         {backdrop ? (
           <Image
             src={backdrop}

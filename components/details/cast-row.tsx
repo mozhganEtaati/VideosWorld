@@ -26,7 +26,7 @@ export function CastRow({ cast }: { cast: TmdbCastMember[] }) {
           <Users className="h-5 w-5 text-accent" />
           <h2 className="text-lg font-bold">بازیگران</h2>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="hidden items-center gap-1 sm:flex">
           {/* RTL: › (right) goes back toward the start, ‹ (left) reveals more */}
           <button
             type="button"
