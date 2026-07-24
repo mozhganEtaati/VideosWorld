@@ -2,12 +2,19 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Users, ChevronLeft, ChevronRight } from "lucide-react";
 import { profileUrl } from "@/services/tmdb/images";
-import type { TmdbCastMember } from "@/types/tmdb";
+import type { MediaType, TmdbCastMember } from "@/types/tmdb";
 
 /** Horizontal cast list with scroll arrows: circular headshot + name + role. */
-export function CastRow({ cast }: { cast: TmdbCastMember[] }) {
+export function CastRow({
+  cast,
+  mediaType,
+}: {
+  cast: TmdbCastMember[];
+  mediaType: MediaType;
+}) {
   const people = cast.slice(0, 20);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
   if (!people.length) return null;
@@ -51,8 +58,14 @@ export function CastRow({ cast }: { cast: TmdbCastMember[] }) {
         {people.map((person) => {
           const photo = profileUrl(person.profile_path);
           return (
-            <div key={person.id} className="w-24 shrink-0 text-center">
-              <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full ring-2 ring-border transition-transform duration-200 hover:scale-105 hover:ring-accent">
+            <Link
+              key={person.id}
+              href={`/person/${person.id}?name=${encodeURIComponent(
+                person.name,
+              )}&kind=${mediaType}`}
+              className="group/person w-24 shrink-0 text-center"
+            >
+              <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full ring-2 ring-border transition-transform duration-200 group-hover/person:scale-105 group-hover/person:ring-accent">
                 {photo ? (
                   <Image
                     src={photo}
@@ -67,7 +80,7 @@ export function CastRow({ cast }: { cast: TmdbCastMember[] }) {
                   </div>
                 )}
               </div>
-              <p className="mt-2 line-clamp-1 text-xs font-semibold text-foreground">
+              <p className="mt-2 line-clamp-1 text-xs font-semibold text-foreground group-hover/person:text-accent">
                 {person.name}
               </p>
               {person.character && (
@@ -75,7 +88,7 @@ export function CastRow({ cast }: { cast: TmdbCastMember[] }) {
                   {person.character}
                 </p>
               )}
-            </div>
+            </Link>
           );
         })}
       </div>

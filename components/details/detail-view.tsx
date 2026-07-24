@@ -160,7 +160,7 @@ export function DetailView({ detail, mediaType }: DetailViewProps) {
           />
         </TrailerPanel>
 
-        <CastRow cast={cast} />
+        <CastRow cast={cast} mediaType={mediaType} />
 
         {recommendations.length > 0 && (
           <CarouselRow title="پیشنهادها" items={recommendations} />
