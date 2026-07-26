@@ -2,7 +2,7 @@ import type { MediaType } from "@/types/tmdb";
 
 /** TMDB image path builder sizes. */
 export const IMAGE_SIZES = {
-  poster: "w500",
+  poster: "w342",
   backdrop: "w1280",
   backdropOriginal: "original",
   thumb: "w300",

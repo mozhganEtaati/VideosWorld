@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play, Star } from "lucide-react";
-import { backdropOriginalUrl, posterUrl } from "@/services/tmdb/images";
+import { backdropUrl, posterUrl } from "@/services/tmdb/images";
 import { yearOf, toPersianDigits } from "@/lib/jalali";
 import { cn } from "@/lib/utils";
 import type { MediaType, TmdbListItem } from "@/types/tmdb";
@@ -59,7 +59,7 @@ export function HeroCarousel({
   const year = yearOf(featured.release_date ?? featured.first_air_date);
   const rating = featured.vote_average ? featured.vote_average.toFixed(1) : null;
   const href = `/${mediaType === "tv" ? "series" : "movie"}/${featured.id}`;
-  const backdrop = backdropOriginalUrl(featured.backdrop_path);
+  const backdrop = backdropUrl(featured.backdrop_path);
 
   return (
     <section

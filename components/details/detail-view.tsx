@@ -13,7 +13,7 @@ import { CastRow } from "./cast-row";
 import { CommentsSection } from "./comments-section";
 import { FavoriteButton } from "@/components/favorites/favorite-button";
 import type { FavoriteItem } from "@/components/providers/user-provider";
-import { backdropOriginalUrl, posterUrl } from "@/services/tmdb/images";
+import { backdropUrl, posterUrl } from "@/services/tmdb/images";
 import { formatJalali, yearOf, toPersianDigits } from "@/lib/jalali";
 import { getReactions, getComments } from "@/services/mock";
 import { GENRES_FA } from "@/constants/config";
@@ -42,7 +42,7 @@ function Chip({
 export function DetailView({ detail, mediaType }: DetailViewProps) {
   const title = detail.title ?? detail.name ?? "";
   const year = yearOf(detail.release_date ?? detail.first_air_date);
-  const backdrop = backdropOriginalUrl(detail.backdrop_path);
+  const backdrop = backdropUrl(detail.backdrop_path);
   const poster = posterUrl(detail.poster_path);
   const runtime = detail.runtime ?? detail.episode_run_time?.[0];
   const country = detail.production_countries?.[0]?.name ?? "—";
